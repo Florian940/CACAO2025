@@ -126,18 +126,45 @@ public class Transformateur3ContratCadreVendeur extends Transformateur3Fabriquan
                     boolean teteGondole = !(choco==hypo);
                     double capa = capacite_vente_max.get(choco);
 
-                    if(capa>100){
-                        // Contrat avec tête de gondole
+                    if(capa>10000){
+                        capa = capa/5; 
                         if(teteGondole){
-                            // 1ere tentative avec tête de gondole
-                            boolean marcheConclu = demanderUnContratCadreVendeur(acteur, choco, capa, true);
-                            if(!marcheConclu){
+                            int a = 0;
+                            for (int i=0; i<5; ++i){
+                                // 1ere tentative avec tête de gondole
+                                boolean marcheConclu = demanderUnContratCadreVendeur(acteur, choco, capa, true);
+                                if(!marcheConclu){
+                                    a+=1;
+                                }
+                            }
+                            for(int k=0; k<a; ++k){
                                 // 2ème tentative sans tête de gondole
                                 demanderUnContratCadreVendeur(acteur, choco, capa, false);
-                            }
+                            }       
                         // Contrat sans tête de gondole
-                        }else{
+                        }
+                        else{
                             demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                            demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                            demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                            demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                            demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                        }
+                    }
+                    else{
+                        if(capa>100){
+                            // Contrat avec tête de gondole
+                            if(teteGondole){
+                                // 1ere tentative avec tête de gondole
+                                boolean marcheConclu = demanderUnContratCadreVendeur(acteur, choco, capa, true);
+                                if(!marcheConclu){
+                                    // 2ème tentative sans tête de gondole
+                                    demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                                }
+                            // Contrat sans tête de gondole
+                            }else{
+                                demanderUnContratCadreVendeur(acteur, choco, capa, false);
+                            }
                         }
                     }
                 }
