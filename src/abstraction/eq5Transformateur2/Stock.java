@@ -32,14 +32,14 @@ public class Stock extends Transformateur2Acteur{
         super.journal.ajouter("stock initialisé");
         
         for (Feve f : Feve.values()) {
-            this.stockFeve.put(f, new Variable("Stock Feve " + f, this, 0.0));
+            this.stockFeve.put(f, new Variable("Stock Feve " + f, this,500));
         }
         for (Chocolat c : Chocolat.values()) {
             this.stockChoco.put(c, new Variable("Stock Chocolat " + c, this, 0.0));
         }
         
-        this.stockFeveTotal = new Variable("EQ5TStockFeve", this, 10000.0);
-        this.stockChocoTotal = new Variable("EQ5TStockChoco", this, 10000.0);
+        this.stockFeveTotal = new Variable("EQ5TStockFeve", this, 3000.0);
+        this.stockChocoTotal = new Variable("EQ5TStockChoco", this, 0.0);
         this.stockChocoMarqueTotal = new Variable("EQ5TStockChocoMarque", this, 0.0);
     }
     public Variable getstockFeveTotal() {

@@ -60,7 +60,7 @@ public class Distributeur1 extends Distributeur1AcheteurAppelOffre implements ID
         ChocolatDeMarque chocolat = chocolats.get(i);
 
         // Initialize stocksChocolats with a default stock value
-        this.stocksChocolats.put(chocolat, new Variable(this.getNom() + "Stock" + chocolat.getNom(), this, 1000.0));
+        this.stocksChocolats.put(chocolat, new Variable(this.getNom() + "Stock" + chocolat.getNom(), this, 10000.0));
 
         // Initialize other lists
         this.prix.add(10.0); // Default price
@@ -98,6 +98,8 @@ public class Distributeur1 extends Distributeur1AcheteurAppelOffre implements ID
 		int step = Filiere.LA_FILIERE.getEtape(); // Récupération du numéro de l'étape
 		journal.ajouter(" ==============  Etape : " + step +  " ====================");
 		journalV.ajouter(" ==============  Etape : " + step +  " ====================");
+		journalCC.ajouter(" ==============  Etape : " + step +  " ====================");
+		journalAO.ajouter(" ==============  Etape : " + step +  " ====================");
 		for (int i=0; i< this.chocolats.size(); i++){
 			if ("Fraudolat".equals(this.stocksChocolats.get(chocolats.get(i)).getNom())){
 				requiredQuantities.set(i,500.0);
@@ -146,6 +148,7 @@ public class Distributeur1 extends Distributeur1AcheteurAppelOffre implements ID
 
 		for (int i = 0 ; i<chocolats.size() ; i++){
 			str_journal_stock = this.stocksChocolats.get(chocolats.get(i)).getNom() + " = " + this.stocksChocolats.get(chocolats.get(i)).getValeur() + ";";
+			str_journal_stock = str_journal_stock.replace("EQ7Stock", "Stock ");
 			journal.ajouter(str_journal_stock);
 		}
 
@@ -254,7 +257,6 @@ public class Distributeur1 extends Distributeur1AcheteurAppelOffre implements ID
 		List<Journal> res=new ArrayList<Journal>();
 		res.add(journal);
 		res.add(journalV);
-		res.add(journalE);
 		res.add(journalCC);
 		res.add(journalAO);
 		return res;

@@ -1,11 +1,9 @@
 //Simon
 package abstraction.eq5Transformateur2;
 
-import abstraction.eqXRomu.bourseCacao.BourseCacao;
 import abstraction.eqXRomu.contratsCadres.Echeancier;
 import abstraction.eqXRomu.contratsCadres.ExemplaireContratCadre;
 import abstraction.eqXRomu.contratsCadres.IAcheteurContratCadre;
-import abstraction.eqXRomu.filiere.Filiere;
 import abstraction.eqXRomu.produits.Feve;
 import abstraction.eqXRomu.produits.IProduit;
 import java.util.ArrayList;
@@ -26,15 +24,19 @@ class ContratCadreAcheteur extends ContratCadreVendeur implements IAcheteurContr
 	 */
 	public boolean achete(IProduit produit){
 		if (produit == Feve.F_MQ){
+			this.journalContrat.ajouter("On cherche " + produit);
 			return true;
 		}
 		if (produit == Feve.F_MQ_E){
+			this.journalContrat.ajouter("on cherche" + produit);
 			return true;
 		}
 		if (produit == Feve.F_HQ_E){
+			this.journalContrat.ajouter("On cherche" + produit);
 			return true;
 		}
 		if (produit == Feve.F_HQ_BE){
+			this.journalContrat.ajouter("On Cherhce" + produit);
 			return true;
 		}
 
@@ -63,14 +65,14 @@ class ContratCadreAcheteur extends ContratCadreVendeur implements IAcheteurContr
 		double quantiteTotale = original.getQuantiteTotale();
 
 		Feve f = (Feve) contrat.getProduit();
-		double prodTotale = this.getProductionTotale();
+		double prodTotale = this.getProductionTotale()/10000; // en tonnes
 		double proportion = this.getProportion(f);
 
 		double quantiteMin = prodTotale * proportion * 0.1;
 		double quantiteMax = prodTotale * proportion * 1.1;
 
 		// Si la quantité demandée est dans la plage acceptable, on accepte tel quel
-		if (quantiteTotale >= quantiteMin && quantiteTotale <= quantiteMax) {
+		if (quantiteTotale >= quantiteMin/1000 && quantiteTotale <= quantiteMax*1000) {
 			return original;
 		}
 
@@ -109,13 +111,11 @@ class ContratCadreAcheteur extends ContratCadreVendeur implements IAcheteurContr
 	public double contrePropositionPrixAcheteur(ExemplaireContratCadre contrat){
         Double prixVendeur= contrat.getPrix();
 		Feve f = (Feve) contrat.getProduit();
-		BourseCacao bc =  ((BourseCacao) (Filiere.LA_FILIERE.getActeur("BourseCacao")));
-		Double prixBourse= bc.getCours(f).getValeur();
-		if (prixVendeur <= prixBourse){  
+		if (prixVendeur <= 5000){  
 			return prixVendeur;
 		}
 		else{
-			return prixBourse;
+			return (5000*0.8 +0.2*prixVendeur);
 		}
     }
 
@@ -130,7 +130,7 @@ class ContratCadreAcheteur extends ContratCadreVendeur implements IAcheteurContr
 	 * @param contrat
 	 */
 	public void notificationNouveauContratCadre(ExemplaireContratCadre contrat){
-		super.journal.ajouter("nouveau contrat cadre signé"+contrat.toString());
+		super.journalContrat.ajouter("nouveau contrat cadre signé"+contrat.toString());
     
     }
 
@@ -145,7 +145,7 @@ class ContratCadreAcheteur extends ContratCadreVendeur implements IAcheteurContr
 	 */
 	public void receptionner(IProduit p, double quantiteEnTonnes, ExemplaireContratCadre contrat){
         this.ajouterStock(this, p, quantiteEnTonnes, super.cryptogramme);
-		this.journal.ajouter("ajout de " + quantiteEnTonnes + " tonnes de " + p + " à notre stock grâce à un contrat cadre");
+		this.journalContrat.ajouter("ajout de " + quantiteEnTonnes + " tonnes de " + p + " à notre stock grâce à un contrat cadre");
 			
     }
 

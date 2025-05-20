@@ -358,6 +358,10 @@ public class Transformateur3ContratCadreAcheteur extends Transformateur3ContratC
 			IActeur vendeur = contrat.getVendeur();
 			Echeancier e = contrat.getEcheancier();
 			double quantite = e.getQuantite(e.getStepDebut());
+			double prix = contrat.getPrix();
+			List<Double> ListePrix = prixFeve.get(contrat.getProduit());
+			ListePrix.add(prix);
+			prixFeve.replace(contrat.getProduit(), ListePrix);
 			journalCC.ajouter(Journal.texteColore(vendeur, vendeur.getNom())+" - New CC Achat "+contrat.getProduit());
 			journalCC.ajouter("--> [Prix : "+Math.round(contrat.getPrix())+" € | Quantitee par step : "+quantite+" t | Nb step : "+e.getNbEcheances()+"]");
 		

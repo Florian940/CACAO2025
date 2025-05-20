@@ -95,10 +95,10 @@ public class Transformateur3StratQuantity extends Transformateur3Acteur {
         arnaStrat = super.lesChocolats.get(2);
         hypoStrat = super.lesChocolats.get(3);
 
-        this.DemandeProdChoco.put(fraudStrat,40000.0);//productionMaxStrat/3);
+        this.DemandeProdChoco.put(fraudStrat,50000.0);//productionMaxStrat/3);
         this.DemandeProdChoco.put(bolloStrat,1000.0);//productionMaxStrat/3);
-        this.DemandeProdChoco.put(arnaStrat,3000.0);//productionMaxStrat/6);
-        this.DemandeProdChoco.put(hypoStrat,300.0);//productionMaxStrat/6);
+        this.DemandeProdChoco.put(arnaStrat,2500.0);//productionMaxStrat/6);
+        this.DemandeProdChoco.put(hypoStrat,250.0);//productionMaxStrat/6);
 
     }
 
@@ -116,9 +116,9 @@ public class Transformateur3StratQuantity extends Transformateur3Acteur {
 
         miseAJourEcheanciersBesoins();
 
-        if(super.currentStep%4 == 3){
-            evaluateDemandeProdChoco();
-        }
+        //if(super.currentStep%4 == 3){
+        //    evaluateDemandeProdChoco();
+        //}
 
         // Affichage des échéanciers de fèves et chocolats
         

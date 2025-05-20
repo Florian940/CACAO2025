@@ -43,7 +43,7 @@ public class Transformateur1VendeurEncheres extends Transformateur1VendeurAppelD
 
 		super.initialiser();
 
-		this.prixMin = prixTChocoBase.get(choco)*1.8;
+		this.prixMin = prixTChocoBase.get(choco)*1.2;
 
 		this.superviseur = (SuperviseurVentesAuxEncheres)(Filiere.LA_FILIERE.getActeur("Sup.Encheres"));
 		journalTransactions.ajouter(Romu.COLOR_LLGRAY, Color.darkGray,  "E: PrixMin== " + this.prixMin);

@@ -97,13 +97,11 @@ public class DecisionsActeur extends ProcessChoco{
     public double coutProduction(Chocolat c){ //cout de production d'une tonne de chocolat
         Feve f=correspondFeve(c);
         double coutProduction=0;
-        BourseCacao bc =  ((BourseCacao) (Filiere.LA_FILIERE.getActeur("BourseCacao")));
-		Double prixBourse= bc.getCours(f).getValeur();
 
         
         coutProduction+=super.getFraisAditionnel()/this.getProductionTotale();
         coutProduction+=super.getSalaireTotal()/this.getProductionTotale();
-        coutProduction+=prixBourse;   // pour l'instant on base le prix de la tonne de fève sur le prix de la bourse
+        coutProduction+=3000;   // pour l'instant on base le prix de la tonne de fève sur le prix de la bourse en moyenne
         coutProduction+=super.coutIngredientSecondaire;
         coutProduction+=super.getcoutAditionnelParTablette()*10000; // *10000 pour passer de tonne à unité de tablette de chocolat
         
@@ -120,6 +118,7 @@ public class DecisionsActeur extends ProcessChoco{
             Chocolat c =correspondChocolat(f);
             double production = Math.min(this.getProductionTotale()*this.getProportion(f), super.getQuantiteStock(f));
             super.fabriquerChocolat(c , f, production);
+            super.journalStock.ajouter("Production de chocolat: Production de " + production + " tablette de " + c + " à partir de " + f);
             }
 
         if(objecifChangementProportion()){

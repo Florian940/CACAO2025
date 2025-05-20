@@ -244,6 +244,7 @@ public class Distributeur1AcheteurContratCadre extends Distributeur1Stock implem
 		
 		String str_journal_CC = "";
 		str_journal_CC = "Achat en contrat cadre de " + this.stocksChocolats.get(chocolat).getNom()+ " = " + quantiteEnTonnes + " tonne(s);" ;
+		str_journal_CC = str_journal_CC.replace("EQ7StockC_", " ");
 		journalCC.ajouter(str_journal_CC);
 	}
 }

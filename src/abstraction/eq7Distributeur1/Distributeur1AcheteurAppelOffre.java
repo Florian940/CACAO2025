@@ -74,6 +74,7 @@ public class Distributeur1AcheteurAppelOffre extends Distributeur1AcheteurEncher
 
 		String str_journal_AO = "";
 		str_journal_AO = "Achat en appel d'offre de " + this.stocksChocolats.get((ChocolatDeMarque) propositions.get(indice).getProduit()).getNom()+ " = " + propositions.get(indice).getQuantiteT() + " tonne(s);";
+		str_journal_AO = str_journal_AO.replace("EQ7StockC_", " ");
 		journalAO.ajouter(str_journal_AO);
 
 		return(propositions.get(indice));

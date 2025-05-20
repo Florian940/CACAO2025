@@ -14,10 +14,14 @@ import java.util.List;
 public class Transformateur2Acteur implements IActeur {
     protected int cryptogramme;
     protected Journal journal;
+    protected Journal journalStock;
+    protected Journal journalContrat;
     //protected Stock stock;
 
     public Transformateur2Acteur() {
         this.journal = new Journal("Journal Equipe 5", this);
+        this.journalStock = new Journal("Journal Stock", this);
+        this.journalContrat = new Journal("Journal Contrat", this);
     //    this.stock = new Stock();
     }
     
@@ -48,6 +52,7 @@ public class Transformateur2Acteur implements IActeur {
     }
 
     public List<Variable> getIndicateurs() {
+        // On met à jour les indicateurs à chaque étape
         List<Variable> res = new ArrayList<>();
         return res;
     }
@@ -57,8 +62,11 @@ public class Transformateur2Acteur implements IActeur {
     }
 
     public List<Journal> getJournaux() {
+        // On met à jour le journal à chaque étape
         List<Journal> res = new ArrayList<>();
         res.add(journal);
+        res.add(journalStock);
+        res.add(journalContrat);
         return res;
     }
 

@@ -279,24 +279,24 @@ public class Transformateur1Acteur implements IActeur, IMarqueChocolat {
 		this.prixTFeveStockee.put(Feve.F_HQ_BE, 2000.);
 
 		//Initialisation des prix de base des chocolats que l'on veut produire
-		this.prixTChocoBase.put(Chocolat.C_MQ, 5000.);
-		this.prix_Limdt_MQ.setValeur(this, 5000.);
+		this.prixTChocoBase.put(Chocolat.C_MQ, 20000.);
+		this.prix_Limdt_MQ.setValeur(this, 20000.);
 
-		this.prixTChocoBase.put(Chocolat.C_BQ_E, 5000.);
-		this.prix_Limdt_BQ_E.setValeur(this, 5000.);
+		this.prixTChocoBase.put(Chocolat.C_BQ_E, 20000.);
+		this.prix_Limdt_BQ_E.setValeur(this, 20000.);
 
-		this.prixTChocoBase.put(Chocolat.C_MQ_E, 5000.);
-		this.prix_Limdt_MQ_E.setValeur(this, 5000.);
+		this.prixTChocoBase.put(Chocolat.C_MQ_E, 20000.);
+		this.prix_Limdt_MQ_E.setValeur(this, 20000.);
 
-		this.prixTChocoBase.put(Chocolat.C_HQ_BE, 5000.);
-		this.prix_Limdt_HQ_BE.setValeur(this, 5000.);
+		this.prixTChocoBase.put(Chocolat.C_HQ_BE, 20000.);
+		this.prix_Limdt_HQ_BE.setValeur(this, 20000.);
 		
 
 		//Initialisation des marges que l'on va faire sur les différents produits
-		this.marges.put(Chocolat.C_MQ, 1.5);
-		this.marges.put(Chocolat.C_BQ_E, 1.16);
-		this.marges.put(Chocolat.C_MQ_E, 1.16);
-		this.marges.put(Chocolat.C_HQ_BE, 1.3);
+		this.marges.put(Chocolat.C_MQ, 2.5);
+		this.marges.put(Chocolat.C_BQ_E, 1.5);
+		this.marges.put(Chocolat.C_MQ_E, 1.5);
+		this.marges.put(Chocolat.C_HQ_BE, 2.3);
 
 
 		//Initialisation des pourcentage de conversion fèves vers chocolat

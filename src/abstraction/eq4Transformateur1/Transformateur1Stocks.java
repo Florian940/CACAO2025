@@ -24,7 +24,7 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 	protected double coutStockage; // cout de stockage par tonne et par step
 	protected double coutProd; // cout de production unitaire du chocolat produit durant cette step, censé contenir salaires, ingrédients secondaires, et autres couts fixes
 	protected double STOCK_MAX_TOTAL_FEVES = 1000000;
-	protected double PRIX_MAX = 200000;
+	protected double PRIX_MAX = 1000000;
 
 	//Listes regroupant les contrats cadres actifs
 	protected List<ExemplaireContratCadre> mesContratEnTantQuAcheteur;
@@ -53,28 +53,36 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 	public void initialiser() {
 		super.initialiser();
 
+		this.coutStockage = Filiere.LA_FILIERE.getParametre("cout moyen stockage producteur").getValeur()*4;
+
+		this.coutProd = 0; //il s'agit du cout de la production d'une tonne de chocolat, valeur arbitraire censée contenir salaires, ingrédients secondaires, et autres couts fixes
+
+
 		//Initialisation des prix de nos stocks de fève
 		this.prixTFeveStockee.put(Feve.F_MQ, 2000.);
 		this.prixTFeveStockee.put(Feve.F_BQ_E, 2000.);
 		this.prixTFeveStockee.put(Feve.F_MQ_E, 2000.);
 		this.prixTFeveStockee.put(Feve.F_HQ_BE, 2000.);
 
-		this.coutStockage = Filiere.LA_FILIERE.getParametre("cout moyen stockage producteur").getValeur()*4;
-
-		this.coutProd = 0; //il s'agit du cout de la production d'une tonne de chocolat, valeur arbitraire censée contenir salaires, ingrédients secondaires, et autres couts fixes
-
 		//Initialisation des prix de base des chocolats que l'on veut produire
-		this.prixTChocoBase.put(Chocolat.C_MQ, 2000.);
-		this.prixTChocoBase.put(Chocolat.C_BQ_E, 2000.);
-		this.prixTChocoBase.put(Chocolat.C_HQ_BE, 2000.);
-		this.prixTChocoBase.put(Chocolat.C_MQ_E, 2000.);
+		this.prixTChocoBase.put(Chocolat.C_MQ, 20000.);
+		this.prix_Limdt_MQ.setValeur(this, 20000.);
+
+		this.prixTChocoBase.put(Chocolat.C_BQ_E, 20000.);
+		this.prix_Limdt_BQ_E.setValeur(this, 20000.);
+
+		this.prixTChocoBase.put(Chocolat.C_MQ_E, 20000.);
+		this.prix_Limdt_MQ_E.setValeur(this, 20000.);
+
+		this.prixTChocoBase.put(Chocolat.C_HQ_BE, 20000.);
+		this.prix_Limdt_HQ_BE.setValeur(this, 20000.);
 		
 
 		//Initialisation des marges que l'on va faire sur les différents produits
-		this.marges.put(Chocolat.C_MQ, 1.5);
-		this.marges.put(Chocolat.C_BQ_E, 1.16);
-		this.marges.put(Chocolat.C_MQ_E, 1.16);
-		this.marges.put(Chocolat.C_HQ_BE, 1.3);
+		this.marges.put(Chocolat.C_MQ, 2.5);
+		this.marges.put(Chocolat.C_BQ_E, 1.5);
+		this.marges.put(Chocolat.C_MQ_E, 1.5);
+		this.marges.put(Chocolat.C_HQ_BE, 2.3);
 
 		this.journalStock.ajouter(Romu.COLOR_LLGRAY, Color.PINK, "Stock initial chocolat de marque : ");
 
@@ -192,7 +200,8 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 
 							//On vérifie que nos stocks ne sont pas négatifs car sinon on pourrait se retrouver avec des prix négatifs
 							if ( this.getQuantiteEnStock(cm, this.cryptogramme) >=0.){
-								nouveauPrix = ancienPrix * ((this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme))/ (nouveauStock+this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme))) + (prixTFeveStockee.get(f) + coutProd + this.coutStockage) * (pourcentageTransfo.get(f).get(c) * transfo / (nouveauStock+ this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme)));
+								int indMax = this.getMaxPeremption(c);
+								nouveauPrix = ancienPrix * ((this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme))/ (nouveauStock+this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme))) + (prixTFeveStockee.get(f) + coutProd + indMax*this.coutStockage) * (pourcentageTransfo.get(f).get(c) * transfo / (nouveauStock+ this.getQuantiteEnStock(c, this.cryptogramme) + this.getQuantiteEnStock(cm, this.cryptogramme)));
 							}
 							//Si on est en dette de stock, on va garder le même prix qu'au step précédent et on l'augmente pour évite que l'on ne s'enfonce davantage
 							else {
@@ -457,8 +466,8 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 				    pertePeremption(peremption_C_MQ_Limdt, cm, Color.black, journalPeremptionLimdt);
 
 
-					if ((prixTChocoBase.get(Chocolat.C_MQ) + coutProd + this.coutStockage)*marges.get(Chocolat.C_MQ)< PRIX_MAX){
-						prix_Limdt_MQ.setValeur(this, (prixTChocoBase.get(Chocolat.C_MQ) + coutProd + this.coutStockage)*marges.get(Chocolat.C_MQ));
+					if ((prixTChocoBase.get(Chocolat.C_MQ) + coutProd + this.getMaxPeremption(Chocolat.C_MQ)*this.coutStockage)*marges.get(Chocolat.C_MQ)< PRIX_MAX){
+						prix_Limdt_MQ.setValeur(this, (prixTChocoBase.get(Chocolat.C_MQ) + coutProd + this.getMaxPeremption(Chocolat.C_MQ)*this.coutStockage)*marges.get(Chocolat.C_MQ));
 					}
 					else {
 						prix_Limdt_MQ.setValeur(this, PRIX_MAX);
@@ -471,8 +480,8 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 				    pertePeremption(peremption_C_BQ_E_Limdt, cm, Romu.COLOR_GREEN, journalPeremptionLimdt);
 
 
-					if ((prixTChocoBase.get(Chocolat.C_BQ_E) + coutProd + this.coutStockage)*marges.get(Chocolat.C_BQ_E) < PRIX_MAX){
-						prix_Limdt_BQ_E.setValeur(this, (prixTChocoBase.get(Chocolat.C_BQ_E) + coutProd + this.coutStockage)*marges.get(Chocolat.C_BQ_E));
+					if ((prixTChocoBase.get(Chocolat.C_BQ_E) + coutProd + this.getMaxPeremption(Chocolat.C_BQ_E)*this.coutStockage)*marges.get(Chocolat.C_BQ_E) < PRIX_MAX){
+						prix_Limdt_BQ_E.setValeur(this, (prixTChocoBase.get(Chocolat.C_BQ_E) + coutProd + this.getMaxPeremption(Chocolat.C_BQ_E)*this.coutStockage)*marges.get(Chocolat.C_BQ_E));
 					}
 					else {
 						prix_Limdt_BQ_E.setValeur(this, PRIX_MAX);
@@ -483,8 +492,8 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 				case C_MQ_E : 
 				    pertePeremption(peremption_C_MQ_E_Limdt, cm, Color.blue, journalPeremptionLimdt);
 
-					if ((prixTChocoBase.get(Chocolat.C_MQ_E) + coutProd + this.coutStockage)*marges.get(Chocolat.C_MQ_E) < PRIX_MAX){
-						prix_Limdt_MQ_E.setValeur(this, (prixTChocoBase.get(Chocolat.C_MQ_E) + coutProd + this.coutStockage)*marges.get(Chocolat.C_MQ_E));
+					if ((prixTChocoBase.get(Chocolat.C_MQ_E) + coutProd + this.getMaxPeremption(Chocolat.C_MQ_E)*this.coutStockage)*marges.get(Chocolat.C_MQ_E) < PRIX_MAX){
+						prix_Limdt_MQ_E.setValeur(this, (prixTChocoBase.get(Chocolat.C_MQ_E) + coutProd + this.getMaxPeremption(Chocolat.C_MQ_E)*this.coutStockage)*marges.get(Chocolat.C_MQ_E));
 					}
 					else {
 						prix_Limdt_MQ_E.setValeur(this, PRIX_MAX);
@@ -496,8 +505,8 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 				    pertePeremption(peremption_C_HQ_BE_Limdt, cm, Color.red, journalPeremptionLimdt);
 
 
-					if ((prixTChocoBase.get(Chocolat.C_HQ_BE) + coutProd + this.coutStockage)*marges.get(Chocolat.C_HQ_BE) < PRIX_MAX){
-						prix_Limdt_HQ_BE.setValeur(this, (prixTChocoBase.get(Chocolat.C_HQ_BE) + coutProd + this.coutStockage)*marges.get(Chocolat.C_HQ_BE));
+					if ((prixTChocoBase.get(Chocolat.C_HQ_BE) + coutProd + this.getMaxPeremption(Chocolat.C_HQ_BE)*this.coutStockage)*marges.get(Chocolat.C_HQ_BE) < PRIX_MAX){
+						prix_Limdt_HQ_BE.setValeur(this, (prixTChocoBase.get(Chocolat.C_HQ_BE) + coutProd + this.getMaxPeremption(Chocolat.C_HQ_BE)*this.coutStockage)*marges.get(Chocolat.C_HQ_BE));
 					}
 					else {
 						prix_Limdt_HQ_BE.setValeur(this, PRIX_MAX);
@@ -822,6 +831,31 @@ public class Transformateur1Stocks extends Transformateur1Usine implements IFabr
 			journalPer.ajouter(Romu.COLOR_LLGRAY, color, i+" : "+peremptionArray[i]);
 		}
 		journalPer.ajouter("\n");
+	}
+
+	/**
+	 * @author YAOU Reda
+	 * Cette méthode permet d'avoir le plus grand indice de l'array de péremption non vide, pour un type de chocolat
+	 * Et ce pour déduire à quel point ce chocolat nous a couté pour le stockage et ainsi optimiser son prix
+	 */
+	private int getMaxPeremption(Chocolat c) {
+		double[] peremptionArray = null;
+		if (c == Chocolat.C_MQ) {
+			peremptionArray = peremption_C_MQ_Limdt;
+		} else if (c == Chocolat.C_BQ_E) {
+			peremptionArray = peremption_C_BQ_E_Limdt;
+		} else if (c == Chocolat.C_MQ_E) {
+			peremptionArray = peremption_C_MQ_E_Limdt;
+		} else if (c == Chocolat.C_HQ_BE) {
+			peremptionArray = peremption_C_HQ_BE_Limdt;
+		}
+		int max = 0;
+		for (int i=0; i<peremptionArray.length; i++) {
+			if (peremptionArray[i] > 0) {
+				max+= 1;
+			}
+		}
+		return max;
 	}
 
 }

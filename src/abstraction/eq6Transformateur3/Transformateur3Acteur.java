@@ -3,6 +3,7 @@ package abstraction.eq6Transformateur3;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import abstraction.eqXRomu.filiere.Banque;
@@ -26,7 +27,6 @@ public class Transformateur3Acteur implements IActeur {
 	protected Journal jdb;
 	protected Journal journalProduction;
 	protected Journal journalStock;
-	protected Journal journalTransac;
 	protected Journal journalCC;
 	protected Journal journalBourse;
 	protected Journal journalAO;
@@ -40,7 +40,7 @@ public class Transformateur3Acteur implements IActeur {
 	protected Transformateur3Stock stockChoco;
 
 	//Prix
-	protected HashMap<Feve, List<Double>> prixFeve;
+	protected HashMap<IProduit, List<Double>> prixFeve;
 	protected HashMap<IProduit, List<Double>> prixChoco;
 
 	protected Transformateur3StratPrix StratPrix;
@@ -69,7 +69,6 @@ public class Transformateur3Acteur implements IActeur {
 		this.jdb = new Journal("Journal de bord", this);
 		this.journalProduction = new Journal("Journal de production", this);
 		this.journalStock = new Journal("Journal des stocks", this);
-		this.journalTransac = new Journal("Journal des transactions", this);
 		this.journalCC = new Journal("Journal des contrats cadre", this);
 		this.journalBourse = new Journal("Journal de la Bourse", this);
 		this.journalAO = new Journal("Journal des appels d'offre", this);
@@ -95,6 +94,15 @@ public class Transformateur3Acteur implements IActeur {
 		this.dicoIndicateurFeves.put(abstraction.eqXRomu.produits.Feve.F_MQ_E,eq6_Q_MQ_1);
 		this.dicoIndicateurFeves.put(abstraction.eqXRomu.produits.Feve.F_HQ_E,eq6_Q_HQ_1);
 		this.dicoIndicateurFeves.put(abstraction.eqXRomu.produits.Feve.F_HQ_BE,eq6_Q_HQ_2);
+
+		//Bot de prix
+		this.StratPrix = new Transformateur3StratPrix();
+		this.prixChoco = new HashMap<>();
+		this.prixFeve = new HashMap<>();
+		for(IProduit feve : dicoIndicateurFeves.keySet()){
+			List<Double> Prix = new LinkedList<>();
+			this.prixFeve.put(feve, Prix);
+		}
 
 	}
 	

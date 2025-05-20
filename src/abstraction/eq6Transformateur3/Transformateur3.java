@@ -52,7 +52,6 @@ public class Transformateur3 extends Transformateur3AO{
 		res.add(super.jdb);
 		res.add(super.journalProduction);
 		res.add(super.journalStock);
-		res.add(super.journalTransac);
 		res.add(super.journalCC);
 		res.add(super.journalBourse);
 		res.add(super.journalAO);

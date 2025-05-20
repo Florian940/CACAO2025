@@ -32,7 +32,7 @@ public class Transformateur3Fabriquant extends Transformateur3Marques implements
     private double coutIngredient = 450.0; // €/tonnes
     private double salaireOuvrier = 4500.0; // €
     
-    private double coutTotalProd = 0;
+    protected double coutTotalProd = 0;
     private double quantiteTotaleProduite = 0;
 
     //Production maximale : 128 000 T x2 = 256 000 T
@@ -59,6 +59,12 @@ public class Transformateur3Fabriquant extends Transformateur3Marques implements
         super.lesChocolats.add(bollo);
         super.lesChocolats.add(arna);
         super.lesChocolats.add(hypo);
+
+        //Remplissage de prixChoco
+        for(IProduit choco : super.lesChocolats){
+            List<Double> Prix = new ArrayList<Double>();
+            super.prixChoco.put(choco, Prix);
+            }
         
         //Dico indicateur choco
 		this.dicoIndicateurChoco = new HashMap<IProduit, Variable>();

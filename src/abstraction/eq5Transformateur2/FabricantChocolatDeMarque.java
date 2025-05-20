@@ -1,4 +1,4 @@
-// Nils
+// Nils Rossignol
 package abstraction.eq5Transformateur2;
 
 import abstraction.eqXRomu.filiere.IFabricantChocolatDeMarque;
@@ -15,7 +15,7 @@ public class FabricantChocolatDeMarque extends AcheteurBourse  implements IFabri
         super(); 
         this.chocolatsProduits = new ArrayList<>();
         
-        
+        // On ajoute les chocolats produits par le fabricant, leur qualité, et leur quantité de cacao
         this.chocolatsProduits.add(new ChocolatDeMarque(Chocolat.C_HQ_BE, "ChocoParfait",100));
         this.chocolatsProduits.add(new ChocolatDeMarque(Chocolat.C_HQ_E, "ChocoHautEq",100));
         this.chocolatsProduits.add(new ChocolatDeMarque(Chocolat.C_MQ_E, "ChocoMoyenEq",100));
