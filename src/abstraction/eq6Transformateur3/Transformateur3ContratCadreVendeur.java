@@ -262,13 +262,13 @@ public class Transformateur3ContratCadreVendeur extends Transformateur3Fabriquan
         if(meilleurs_prix_histo == 0){
             Double prixinit = 0.0;
             if(Choco.equals(fraud)){
-                prixinit = 9000.0;
-            } else if(Choco.equals(bollo)){
-                prixinit = 9500.0;
-            } else if(Choco.equals(arna)){
                 prixinit = 10000.0;
-            }else if(Choco.equals(hypo)){
+            } else if(Choco.equals(bollo)){
                 prixinit = 11000.0;
+            } else if(Choco.equals(arna)){
+                prixinit = 13000.0;
+            }else if(Choco.equals(hypo)){
+                prixinit = 17000.0;
             }
             return prixinit;
         }
